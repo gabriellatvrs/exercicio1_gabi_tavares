@@ -17,28 +17,27 @@ não aceita acento, espaço ou caractere especial, apenas _
 */
 
 
-EQUATION("X")
 /*
+EQUATION("X")
 Variável X
 V: chamando o valor da variável 
 L: lag - defasagens - quantos períodos pra trás 
 S: specific object 
 c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
-*/
 RESULT(VL("X",1)+V("c"))
-
 EQUATION("c") 
 v[0]=V("min");
 v[1]=V("max");
 v[2]=uniform(v[0], v[1]);
-// na hora da simulação, colocamos os parâmetros que quisermos para min e max
+Na hora da simulação, colocamos os parâmetros que quisermos para min e max
 RESULT(v[2])
-
-/*
-OUTRAS FORMAS DE FAZER 
+*/
 
 EQUATION("X")
 RESULT(VL("X",1)+RND)
+
+/*
+OUTRAS FORMAS DE FAZER 
 
 EQUATION("X")
 v[0]=VL("X",1);

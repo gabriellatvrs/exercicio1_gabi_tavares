@@ -1,6 +1,7 @@
 Model exercicio1 (ver. 1.0)
 
-Exercício da primeira aula
+Exercício da primeira aula 
+Tarefa para criar o modelo com passeio aleatório
 
 (PRESS CTRL+E TO EDIT EQUATIONS)
 

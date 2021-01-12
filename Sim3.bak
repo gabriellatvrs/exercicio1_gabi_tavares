@@ -1,0 +1,150 @@
+	
+Label Root
+{
+	Son: MODEL
+	Label MODEL
+	{
+		Param: min
+		Param: max
+		Var: c
+		Var: X
+
+	}
+
+
+}
+
+
+DATA
+
+Object: Root C	1
+
+Object: MODEL C	10
+Param: min 0 n + n n	-10	-10	-10	-10	-10	-10	-10	-10	-10	-10
+Param: max 0 n + n n	10	10	10	10	10	10	10	10	10	10
+Var: c 1 s + n p	-10	-7.77777777777778	-5.55555555555556	-3.33333333333333	-1.11111111111111	1.11111111111111	3.33333333333333	5.55555555555556	7.77777777777778	10
+Var: X 1 s + n p	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009	35.6800895817009
+
+SIM_NUM 1
+SEED 2
+MAX_STEP 100
+EQUATION fun_exercicio1.cpp
+MODELREPORT report_Sim1.html
+
+DESCRIPTION
+
+Object_Root
+(no description available)
+END_DESCRIPTION
+
+Object_MODEL
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_min
+(no description available)
+_INIT_
+All 1 instances equal to -10.
+END_DESCRIPTION
+
+Parameter_max
+(no description available)
+_INIT_
+All 1 instances equal to 10.
+END_DESCRIPTION
+
+Variable_c
+(no description available)
+_INIT_
+All 10 instances ranging from -10 to 10 (increments of 2.22222).
+END_DESCRIPTION
+
+Variable_X
+Variável X
+V: chamando o valor da variável 
+L: lag - defasagens - quantos períodos pra trás 
+S: specific object 
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+//#define EIGENLIB			// uncomment to use Eigen linear algebra library
+//#define NO_POINTER_INIT	// uncomment to disable pointer checking
+
+#include "fun_head_fast.h"
+
+// do not add Equations in this area
+
+MODELBEGIN
+
+// insert your equations here, between the MODELBEGIN and MODELEND words
+
+/* 
+ou assim para comentar em parágrafos
+ctrl + i mostra os macros
+c++ reconhece maiúsculo vs. minúsculo
+não aceita acento, espaço ou caractere especial, apenas _
+*/
+
+
+EQUATION("X")
+/*
+Variável X
+V: chamando o valor da variável 
+L: lag - defasagens - quantos períodos pra trás 
+S: specific object 
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
+*/
+RESULT(VL("X",1)+V("c"))
+
+EQUATION("c") 
+v[0]=V("min");
+v[1]=V("max");
+v[2]=uniform(v[0], v[1]);
+// na hora da simulação, colocamos os parâmetros que quisermos para min e max
+RESULT(v[2])
+
+/*
+OUTRAS FORMAS DE FAZER 
+
+EQUATION("X")
+RESULT(VL("X",1)+RND)
+
+EQUATION("X")
+v[0]=VL("X",1);
+v[1]=V("c");
+v[2]=v[0]+v[1];
+RESULT(v[2])
+Tem que manter a definição da equação "c" em seguida
+*/
+
+
+
+
+
+
+MODELEND
+
+// do not add Equations in this area
+
+void close_sim( void )
+{
+	// close simulation special commands go here
+}
+
+END_EQ_FILE
