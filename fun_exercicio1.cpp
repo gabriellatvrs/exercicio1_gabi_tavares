@@ -19,7 +19,7 @@ não aceita acento, espaço ou caractere especial, apenas _
 
 EQUATION("X")
 /*
-Variável X
+Variável X e c da Firma, min e max parâmetros da Firma
 V: chamando o valor da variável 
 L: lag - defasagens - quantos períodos pra trás 
 S: specific object 
@@ -80,6 +80,8 @@ v[2]=0;
 else 
 v[2]=v[0]/v[1]
 RESULT(v[2])
+//v[1] pode ser v[1]=COUNT("FIRM") e tira o v[1]=0 de cima
+//pode substituir o if else por: v[2] = v[1] != 0? v[0]/v[1] : 0; 
 
 EQUATION("X_Max")
 /*
@@ -96,16 +98,28 @@ CYCLE(cur, "FIRM")
 	v[0]=v[0];
 }
 RESULT(v[0])
+//pode substituir o if else por: v[0]=v[2]>v[0]?v[2]:v[0];
+
 
 EQUATION("X_Marketshare")
 /*
 Variável da Firma
 */
 RESULT((V("X")/V("X_Sum")))
+/*
+Forma extensa alternativa:
+v[0]=V("X")
+v[1]=V("X_Sum")
+if(v[1]!=0)
+v[2]=v[0]/v[1]
+else
+v[2]=0
+RESULT(v[2])
+*/
 
 EQUATION("Marketshare_Sum")
 /*
-Variável da Firma
+Variável da Setor
 */
 v[0]=0;
 CYCLE(cur, "FIRM")
@@ -114,6 +128,40 @@ CYCLE(cur, "FIRM")
 	v[0]=v[0]+v[1];
 }
 RESULT(v[0])
+//Mais simples: RESULT(SUM("X_Marketshare"))
+
+
+EQUATION("Leader")
+/*
+Variável da Setor 
+*/
+v[0]=0;
+v[1]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]++;
+	//é a mesma coisa que v[1]=v[1]+1 
+	v[2]=VS(cur, "X");
+	if(v[2]>v[0])
+		{
+		v[0]=v[2];
+		v[3]=v[1];
+		}	
+}
+RESULT(v[3])
+/*
+Usando o SEARCH:
+ 
+EQUATION("Leader") 
+v[0]=V("X_Max"); 
+cur1=SEARCH_CND("X", v[0]); 
+v[1]=SEARCH_INST(cur1);
+RESULT(v[1])
+
+Já sabe o valor máx, então procura a firma condicionado ao valor que você estipulou 
+v[1] é o resultado da pesquisa da instância (a posição) da firm de valor máx encontrada
+*/
+
 
 
 
