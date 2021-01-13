@@ -14,6 +14,9 @@ Label Root
 
 		}
 
+		Var: X_Ave
+		Var: X_Max
+		Var: X_Sum
 
 	}
 
@@ -26,15 +29,18 @@ DATA
 Object: Root C	1
 
 Object: SECTOR C	1
+Var: X_Ave 0 s + n p
+Var: X_Max 0 s + n p
+Var: X_Sum 0 s + n p
 
 Object: FIRM C	10
-Var: X 1 s + n p	0	0	0	0	0	0	0	0	0	0
+Var: X 1 s + n n	54.1166345122099	47.5970707396546	44.3847525219595	46.5659964124349	46.1366387362986	52.3243368468319	54.0252437197565	51.8130911215603	44.7498655831445	43.608001784556
 Param: max 0 n + n n	1	1	1	1	1	1	1	1	1	1
 Param: min 0 n + n n	0	0	0	0	0	0	0	0	0	0
 Var: c 0 n + n n
 
 SIM_NUM 1
-SEED 1
+SEED 2
 MAX_STEP 100
 EQUATION fun_exercicio1.cpp
 MODELREPORT report_Sim1.html
@@ -48,6 +54,24 @@ END_DESCRIPTION
 Object_SECTOR
 (no description available)
 _INIT_
+
+END_DESCRIPTION
+
+Variable_X_Ave
+Variável do Setor
+
+
+END_DESCRIPTION
+
+Variable_X_Max
+Variável do Setor
+
+
+END_DESCRIPTION
+
+Variable_X_Sum
+Variável do Setor
+
 
 END_DESCRIPTION
 

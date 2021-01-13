@@ -49,6 +49,30 @@ Tem que manter a definição da equação "c" em seguida
 */
 
 
+EQUATION("X_Sum")
+/*
+Variável do Setor
+*/
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X");
+	v[0]=v[0]+v[1];
+}
+
+RESULT(v[0])
+
+EQUATION("X_Ave")
+/*
+Variável do Setor
+*/
+RESULT(AVE("X"))
+
+EQUATION("X_Max")
+/*
+Variável do Setor
+*/
+RESULT(MAX("X"))
 
 
 
