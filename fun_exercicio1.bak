@@ -66,14 +66,54 @@ EQUATION("X_Ave")
 /*
 Variável do Setor
 */
-RESULT(AVE("X"))
+v[0]=0;
+v[1]=0;
+v[2]=0;
+CYCLE(cur, "FIRM")
+{
+	v[3]=VS(cur,"X");
+	v[0]=v[0]+v[3];
+	v[1]=v[1]+1;
+}
+if(v[1]==0)	
+v[2]=0; 
+else 
+v[2]=v[0]/v[1]
+RESULT(v[2])
 
 EQUATION("X_Max")
 /*
 Variável do Setor
 */
-RESULT(MAX("X"))
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X");
+	
+	if(v[1]>=v[0]) 	
+	v[0]=v[1]; 
+	else 
+	v[0]=v[0];
+}
+RESULT(v[0])
 
+EQUATION("X_Marketshare")
+/*
+Variável da Firma
+*/
+RESULT((V("X")/V("X_Sum")))
+
+EQUATION("Marketshare_Sum")
+/*
+Variável da Firma
+*/
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X_Marketshare");
+	v[0]=v[0]+v[1];
+}
+RESULT(v[0])
 
 
 

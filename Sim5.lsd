@@ -1,0 +1,204 @@
+	
+Label Root
+{
+	Son: SECTOR
+	Label SECTOR
+	{
+		Son: FIRM
+		Label FIRM
+		{
+			Var: X
+			Param: max
+			Param: min
+			Var: c
+			Var: X_Marketshare
+			Var: Marketshare_Sum
+
+		}
+
+		Var: X_Ave
+		Var: X_Max
+		Var: X_Sum
+
+	}
+
+
+}
+
+
+DATA
+
+Object: Root C	1
+
+Object: SECTOR C	1
+Var: X_Ave 0 s + n n
+Var: X_Max 0 s + n n
+Var: X_Sum 0 s + n n
+
+Object: FIRM C	10
+Var: X 1 s + n n	104.29495966016	99.5303217291682	96.2946780054332	96.0950690753983	90.7184750068476	100.920926393291	104.924010839849	102.101168204635	88.8148811028671	93.757496946446
+Param: max 0 n + n n	1	1	1	1	1	1	1	1	1	1
+Param: min 0 n + n n	0	0	0	0	0	0	0	0	0	0
+Var: c 0 n + n n
+Var: X_Marketshare 0 s + n n
+Var: Marketshare_Sum 0 s + n n
+
+SIM_NUM 1
+SEED 3
+MAX_STEP 100
+EQUATION fun_exercicio1.cpp
+MODELREPORT report_Sim1.html
+
+DESCRIPTION
+
+Object_Root
+(no description available)
+END_DESCRIPTION
+
+Object_SECTOR
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Ave
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Max
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Sum
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Object_FIRM
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X
+Variável X
+V: chamando o valor da variável 
+L: lag - defasagens - quantos períodos pra trás 
+S: specific object 
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
+_INIT_
+All 10 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_max
+(no description available)
+_INIT_
+All 10 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_min
+(no description available)
+_INIT_
+All 10 instances equal to 0.
+END_DESCRIPTION
+
+Variable_c
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Marketshare
+Variável da Firma
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Marketshare_Sum
+Variável da Firma
+_INIT_
+
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+//#define EIGENLIB			// uncomment to use Eigen linear algebra library
+//#define NO_POINTER_INIT	// uncomment to disable pointer checking
+
+#include "fun_head_fast.h"
+
+// do not add Equations in this area
+
+MODELBEGIN
+
+// insert your equations here, between the MODELBEGIN and MODELEND words
+
+/* 
+ou assim para comentar em parágrafos
+ctrl + i mostra os macros
+c++ reconhece maiúsculo vs. minúsculo
+não aceita acento, espaço ou caractere especial, apenas _
+*/
+
+
+EQUATION("X")
+/*
+Variável X
+V: chamando o valor da variável 
+L: lag - defasagens - quantos períodos pra trás 
+S: specific object 
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
+*/
+RESULT(VL("X",1)+V("c"))
+
+EQUATION("c") 
+v[0]=V("min");
+v[1]=V("max");
+v[2]=uniform(v[0], v[1]);
+// na hora da simulação, colocamos os parâmetros que quisermos para min e max
+RESULT(v[2])
+
+/*
+OUTRAS FORMAS DE FAZER 
+
+EQUATION("X")
+RESULT(VL("X",1)+RND)
+
+EQUATION("X")
+v[0]=VL("X",1);
+v[1]=V("c");
+v[2]=v[0]+v[1];
+RESULT(v[2])
+Tem que manter a definição da equação "c" em seguida
+*/
+
+
+
+
+
+
+MODELEND
+
+// do not add Equations in this area
+
+void close_sim( void )
+{
+	// close simulation special commands go here
+}
+
+END_EQ_FILE
