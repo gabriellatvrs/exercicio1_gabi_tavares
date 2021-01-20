@@ -1,2 +1,2 @@
-c Leader Marketshare_Sum X X_Ave X_Marketshare X_Max X_Sum
+c Firm_Rank Leader Marketshare_Sum Rank X X_Ave X_Marketshare X_Max X_Sum
 max min

@@ -133,7 +133,7 @@ RESULT(v[0])
 
 EQUATION("Leader")
 /*
-Variável da Setor 
+Variável do Setor 
 */
 v[0]=0;
 v[1]=0;
@@ -162,6 +162,24 @@ Já sabe o valor máx, então procura a firma condicionado ao valor que você estipu
 v[1] é o resultado da pesquisa da instância (a posição) da firm de valor máx encontrada
 */
 
+EQUATION("Rank")
+/*
+Variável do Setor
+*/
+		SORT("FIRM", "X", "DOWN");
+		v[0]=0;
+		CYCLE(cur,"FIRM")
+				{
+				v[0]++;
+				WRITES(cur, "Firm_Rank", v[0]); // Firm_Rank é parâmetro da Firma
+				}
+RESULT(0)
+
+/* 
+Se quiser que seja uma variável ou invés de parâmetro 
+EQUATION_DUMMY("Firm_Rank", "Rank")
+*/
+		
 
 
 
