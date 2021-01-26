@@ -16,25 +16,24 @@ c++ reconhece maiúsculo vs. minúsculo
 não aceita acento, espaço ou caractere especial, apenas _
 */
 
-
-EQUATION("X")
 /*
+EQUATION("X")
+
 Variável X e c da Firma, min e max parâmetros da Firma
 V: chamando o valor da variável 
 L: lag - defasagens - quantos períodos pra trás 
 S: specific object 
-c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
-*/
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro
+
 RESULT(VL("X",1)+V("c"))
 
 EQUATION("c") 
 v[0]=V("min");
 v[1]=V("max");
-v[2]=uniform(v[0], v[1]);
-// na hora da simulação, colocamos os parâmetros que quisermos para min e max
+v[2]=uniform(v[0], v[1]); // Na hora da simulação, colocamos os parâmetros que quisermos para min e max
 RESULT(v[2])
 
-/*
+
 OUTRAS FORMAS DE FAZER 
 
 EQUATION("X")
@@ -47,6 +46,43 @@ v[2]=v[0]+v[1];
 RESULT(v[2])
 Tem que manter a definição da equação "c" em seguida
 */
+
+// MODELO COM IDEIAS ECONÔMICAS 
+
+EQUATION("X") 
+/* 
+X = Vendas no nível da Firma
+Vendas é Preço x Quantidade
+Quantidade é influencidada pelo preço + qualidade + fator aleatório
+*/
+v[0]=VL("X",1);
+v[1]=V("P");
+v[2]=V("QUAL");
+v[3]=(0.5*v[1]+0.3*v[2]+0.2*(RND+1))*v[0];
+v[4]=v[1]*v[3];
+RESULT(v[4])
+
+
+EQUATION("P") // P = Preço no nível da Firma
+v[0]=VL("X_Marketshare", 1);
+v[1]=V("X_Marketshare");
+		if(v[1]>=v[0])
+		v[2]=((v[1]-v[0])/v[0])+1; 
+		else 
+		v[2]=1;
+v[3]=VL("P",1);
+v[4]=v[2]*v[3];
+RESULT(v[4])
+
+
+EQUATION("QUAL") // QUAL = Qualidade no nível da Firma
+v[0]=VL("QUAL", 1);
+v[1]=V("QUAL");
+		if(v[1]>=v[0]) 	
+		v[2]=v[1]+RND; 
+		else
+		v[2]=v[0]+RND;
+RESULT(v[2])
 
 
 EQUATION("X_Sum")
@@ -180,7 +216,16 @@ Se quiser que seja uma variável ou invés de parâmetro
 EQUATION_DUMMY("Firm_Rank", "Rank")
 */
 		
-
+EQUATION("EntryExit")
+		v[0]=V("switch_entry");
+		if(v[0]==1)
+		{
+				cur=SEARCH_CND("rank", 10);
+				DELETE(cur); // Deletar a última firma do rank
+				cur1=SEARCH_CND("rank", 5);
+				ADDOBJ_EX("FIRM", cur1); // Cria um novo objeto usando o ranking 5 como exemplo
+		}
+RESULT(0)
 
 
 MODELEND
