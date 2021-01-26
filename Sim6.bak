@@ -14,6 +14,7 @@ Label Root
 
 		}
 
+		Var: X_Sum
 
 	}
 
@@ -26,12 +27,13 @@ DATA
 Object: Root C	1
 
 Object: SECTOR C	1
+Var: X_Sum 0 n + n n
 
 Object: FIRM C	10
-Var: X 1 s + n n	10	10	10	10	10	10	10	10	10	10
+Var: X 1 s + n p	10	10	10	10	10	10	10	10	10	10
 Var: P 1 s + n n	1	1	1	1	1	1	1	1	1	1
-Var: QUAL 1 s + n n	1	1	1	1	1	1	1	1	1	1
-Var: X_Marketshare 1 s + n n	1	1	1	1	1	1	1	1	1	1
+Var: QUAL 2 s + n n	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1
+Var: X_Marketshare 2 s + n n	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1
 
 SIM_NUM 1
 SEED 3
@@ -51,6 +53,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_X_Sum
+Variável do Setor
+
+
+END_DESCRIPTION
+
 Object_FIRM
 (no description available)
 _INIT_
@@ -66,19 +74,19 @@ END_DESCRIPTION
 Variable_P
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 10 instances equal to 1.
 END_DESCRIPTION
 
 Variable_QUAL
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 10 instances equal to 1.
 END_DESCRIPTION
 
 Variable_X_Marketshare
 Variável da Firma
 _INIT_
-All 1 instances equal to 1.
+All 10 instances equal to 0.1.
 END_DESCRIPTION
 
 
