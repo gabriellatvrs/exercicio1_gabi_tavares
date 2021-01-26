@@ -16,6 +16,65 @@ c++ reconhece maiúsculo vs. minúsculo
 não aceita acento, espaço ou caractere especial, apenas _
 */
 
+
+// MODELO COM IDEIAS ECONÔMICAS 
+
+EQUATION("X") 
+/* 
+X = Vendas no nível da Firma
+Vendas é Preço x Quantidade
+Quantidade é influencidada pelo preço + qualidade + fator aleatório
+*/
+v[0]=VL("X",1);
+v[1]=V("P");
+v[2]=V("QUAL");
+v[3]=(0.4*v[1]+0.4*v[2]+0.2*RND)*v[0];
+v[4]=v[1]*v[3];
+RESULT(v[4])
+
+
+EQUATION("P") // P = Preço no nível da Firma
+v[0]=VL("X_Marketshare", 2);
+v[1]=VL("X_Marketshare", 1);
+		if(v[1]>=v[0])
+		v[2]=((v[1]-v[0])/v[0])+1; 
+		else 
+		v[2]=1;
+v[3]=VL("P",1);
+v[4]=v[2]*v[3];
+RESULT(v[4])
+
+
+EQUATION("QUAL") // QUAL = Qualidade no nível da Firma
+v[0]=VL("QUAL", 2);
+v[1]=VL("QUAL", 1);
+		if(v[1]>=v[0]) 	
+		v[2]=v[1]+RND; 
+		else
+		v[2]=v[0]+RND;
+RESULT(v[2])
+
+
+EQUATION("X_Marketshare")
+/*
+Variável da Firma
+*/
+RESULT((V("X")/V("X_Sum")))
+/*
+Forma extensa alternativa:
+v[0]=V("X")
+v[1]=V("X_Sum")
+if(v[1]!=0)
+v[2]=v[0]/v[1]
+else
+v[2]=0
+RESULT(v[2])
+*/
+
+
+// MODELOS ANTERIORES
+
+
 /*
 EQUATION("X")
 
@@ -46,44 +105,6 @@ v[2]=v[0]+v[1];
 RESULT(v[2])
 Tem que manter a definição da equação "c" em seguida
 */
-
-// MODELO COM IDEIAS ECONÔMICAS 
-
-EQUATION("X") 
-/* 
-X = Vendas no nível da Firma
-Vendas é Preço x Quantidade
-Quantidade é influencidada pelo preço + qualidade + fator aleatório
-*/
-v[0]=VL("X",1);
-v[1]=V("P");
-v[2]=V("QUAL");
-v[3]=(0.5*v[1]+0.3*v[2]+0.2*(RND+1))*v[0];
-v[4]=v[1]*v[3];
-RESULT(v[4])
-
-
-EQUATION("P") // P = Preço no nível da Firma
-v[0]=VL("X_Marketshare", 1);
-v[1]=V("X_Marketshare");
-		if(v[1]>=v[0])
-		v[2]=((v[1]-v[0])/v[0])+1; 
-		else 
-		v[2]=1;
-v[3]=VL("P",1);
-v[4]=v[2]*v[3];
-RESULT(v[4])
-
-
-EQUATION("QUAL") // QUAL = Qualidade no nível da Firma
-v[0]=VL("QUAL", 1);
-v[1]=V("QUAL");
-		if(v[1]>=v[0]) 	
-		v[2]=v[1]+RND; 
-		else
-		v[2]=v[0]+RND;
-RESULT(v[2])
-
 
 EQUATION("X_Sum")
 /*
@@ -136,22 +157,6 @@ CYCLE(cur, "FIRM")
 RESULT(v[0])
 //pode substituir o if else por: v[0]=v[2]>v[0]?v[2]:v[0];
 
-
-EQUATION("X_Marketshare")
-/*
-Variável da Firma
-*/
-RESULT((V("X")/V("X_Sum")))
-/*
-Forma extensa alternativa:
-v[0]=V("X")
-v[1]=V("X_Sum")
-if(v[1]!=0)
-v[2]=v[0]/v[1]
-else
-v[2]=0
-RESULT(v[2])
-*/
 
 EQUATION("Marketshare_Sum")
 /*
