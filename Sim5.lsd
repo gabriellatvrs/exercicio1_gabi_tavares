@@ -11,9 +11,17 @@ Label Root
 			Param: max
 			Param: min
 			Var: c
+			Var: X_Marketshare
+			Param: Firm_Rank
 
 		}
 
+		Var: X_Ave
+		Var: X_Max
+		Var: X_Sum
+		Var: Marketshare_Sum
+		Var: Leader
+		Var: Rank
 
 	}
 
@@ -26,15 +34,23 @@ DATA
 Object: Root C	1
 
 Object: SECTOR C	1
+Var: X_Ave 0 s + n n
+Var: X_Max 0 s + n n
+Var: X_Sum 0 s + n n
+Var: Marketshare_Sum 0 s + n n
+Var: Leader 0 s + n n
+Var: Rank 0 s + n n
 
 Object: FIRM C	10
-Var: X 1 s + n p	0	0	0	0	0	0	0	0	0	0
+Var: X 1 s + n n	104.29495966016	99.5303217291682	96.2946780054332	96.0950690753983	90.7184750068476	100.920926393291	104.924010839849	102.101168204635	88.8148811028671	93.757496946446
 Param: max 0 n + n n	1	1	1	1	1	1	1	1	1	1
 Param: min 0 n + n n	0	0	0	0	0	0	0	0	0	0
 Var: c 0 n + n n
+Var: X_Marketshare 0 s + n n
+Param: Firm_Rank 0 s + n p	0	0	0	0	0	0	0	0	0	0
 
 SIM_NUM 1
-SEED 1
+SEED 3
 MAX_STEP 100
 EQUATION fun_exercicio1.cpp
 MODELREPORT report_Sim1.html
@@ -46,6 +62,42 @@ Object_Root
 END_DESCRIPTION
 
 Object_SECTOR
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Ave
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Max
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Sum
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Marketshare_Sum
+Variável da Firma
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Leader
+Variável da Setor 
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Rank
 (no description available)
 _INIT_
 
@@ -83,6 +135,18 @@ Variable_c
 (no description available)
 _INIT_
 
+END_DESCRIPTION
+
+Variable_X_Marketshare
+Variável da Firma
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_Firm_Rank
+(no description available)
+_INIT_
+All 10 instances equal to 0.
 END_DESCRIPTION
 
 

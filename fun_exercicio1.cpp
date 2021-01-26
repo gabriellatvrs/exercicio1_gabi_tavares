@@ -16,25 +16,24 @@ c++ reconhece maiúsculo vs. minúsculo
 não aceita acento, espaço ou caractere especial, apenas _
 */
 
-
-EQUATION("X")
 /*
-Variável X
+EQUATION("X")
+
+Variável X e c da Firma, min e max parâmetros da Firma
 V: chamando o valor da variável 
 L: lag - defasagens - quantos períodos pra trás 
 S: specific object 
-c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro 
-*/
+c: é um parâmetro, valor fixo no tempo, não precisa descrever equação para parâmetro
+
 RESULT(VL("X",1)+V("c"))
 
 EQUATION("c") 
 v[0]=V("min");
 v[1]=V("max");
-v[2]=uniform(v[0], v[1]);
-// na hora da simulação, colocamos os parâmetros que quisermos para min e max
+v[2]=uniform(v[0], v[1]); // Na hora da simulação, colocamos os parâmetros que quisermos para min e max
 RESULT(v[2])
 
-/*
+
 OUTRAS FORMAS DE FAZER 
 
 EQUATION("X")
@@ -48,9 +47,185 @@ RESULT(v[2])
 Tem que manter a definição da equação "c" em seguida
 */
 
+// MODELO COM IDEIAS ECONÔMICAS 
+
+EQUATION("X") 
+/* 
+X = Vendas no nível da Firma
+Vendas é Preço x Quantidade
+Quantidade é influencidada pelo preço + qualidade + fator aleatório
+*/
+v[0]=VL("X",1);
+v[1]=V("P");
+v[2]=V("QUAL");
+v[3]=(0.5*v[1]+0.3*v[2]+0.2*(RND+1))*v[0];
+v[4]=v[1]*v[3];
+RESULT(v[4])
 
 
+EQUATION("P") // P = Preço no nível da Firma
+v[0]=VL("X_Marketshare", 1);
+v[1]=V("X_Marketshare");
+		if(v[1]>=v[0])
+		v[2]=((v[1]-v[0])/v[0])+1; 
+		else 
+		v[2]=1;
+v[3]=VL("P",1);
+v[4]=v[2]*v[3];
+RESULT(v[4])
 
+
+EQUATION("QUAL") // QUAL = Qualidade no nível da Firma
+v[0]=VL("QUAL", 1);
+v[1]=V("QUAL");
+		if(v[1]>=v[0]) 	
+		v[2]=v[1]+RND; 
+		else
+		v[2]=v[0]+RND;
+RESULT(v[2])
+
+
+EQUATION("X_Sum")
+/*
+Variável do Setor
+*/
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X");
+	v[0]=v[0]+v[1];
+}
+
+RESULT(v[0])
+
+EQUATION("X_Ave")
+/*
+Variável do Setor
+*/
+v[0]=0;
+v[1]=0;
+v[2]=0;
+CYCLE(cur, "FIRM")
+{
+	v[3]=VS(cur,"X");
+	v[0]=v[0]+v[3];
+	v[1]=v[1]+1;
+}
+if(v[1]==0)	
+v[2]=0; 
+else 
+v[2]=v[0]/v[1]
+RESULT(v[2])
+//v[1] pode ser v[1]=COUNT("FIRM") e tira o v[1]=0 de cima
+//pode substituir o if else por: v[2] = v[1] != 0? v[0]/v[1] : 0; 
+
+EQUATION("X_Max")
+/*
+Variável do Setor
+*/
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X");
+	
+	if(v[1]>=v[0]) 	
+	v[0]=v[1]; 
+	else 
+	v[0]=v[0];
+}
+RESULT(v[0])
+//pode substituir o if else por: v[0]=v[2]>v[0]?v[2]:v[0];
+
+
+EQUATION("X_Marketshare")
+/*
+Variável da Firma
+*/
+RESULT((V("X")/V("X_Sum")))
+/*
+Forma extensa alternativa:
+v[0]=V("X")
+v[1]=V("X_Sum")
+if(v[1]!=0)
+v[2]=v[0]/v[1]
+else
+v[2]=0
+RESULT(v[2])
+*/
+
+EQUATION("Marketshare_Sum")
+/*
+Variável da Setor
+*/
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X_Marketshare");
+	v[0]=v[0]+v[1];
+}
+RESULT(v[0])
+//Mais simples: RESULT(SUM("X_Marketshare"))
+
+
+EQUATION("Leader")
+/*
+Variável do Setor 
+*/
+v[0]=0;
+v[1]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]++;
+	//é a mesma coisa que v[1]=v[1]+1 
+	v[2]=VS(cur, "X");
+	if(v[2]>v[0])
+		{
+		v[0]=v[2];
+		v[3]=v[1];
+		}	
+}
+RESULT(v[3])
+/*
+Usando o SEARCH:
+ 
+EQUATION("Leader") 
+v[0]=V("X_Max"); 
+cur1=SEARCH_CND("X", v[0]); 
+v[1]=SEARCH_INST(cur1);
+RESULT(v[1])
+
+Já sabe o valor máx, então procura a firma condicionado ao valor que você estipulou 
+v[1] é o resultado da pesquisa da instância (a posição) da firm de valor máx encontrada
+*/
+
+EQUATION("Rank")
+/*
+Variável do Setor
+*/
+		SORT("FIRM", "X", "DOWN");
+		v[0]=0;
+		CYCLE(cur,"FIRM")
+				{
+				v[0]++;
+				WRITES(cur, "Firm_Rank", v[0]); // Firm_Rank é parâmetro da Firma
+				}
+RESULT(0)
+
+/* 
+Se quiser que seja uma variável ou invés de parâmetro 
+EQUATION_DUMMY("Firm_Rank", "Rank")
+*/
+		
+EQUATION("EntryExit")
+		v[0]=V("switch_entry");
+		if(v[0]==1)
+		{
+				cur=SEARCH_CND("rank", 10);
+				DELETE(cur); // Deletar a última firma do rank
+				cur1=SEARCH_CND("rank", 5);
+				ADDOBJ_EX("FIRM", cur1); // Cria um novo objeto usando o ranking 5 como exemplo
+		}
+RESULT(0)
 
 
 MODELEND
