@@ -17,7 +17,30 @@ não aceita acento, espaço ou caractere especial, apenas _
 */
 
 
-// MODELO COM IDEIAS ECONÔMICAS 
+// CONCENTRAÇÃO E EXPERIMENTOS - Exercício 4
+
+
+EQUATION("HHI") // Nível do Setor
+v[0]=0;
+v[1]=0;
+v[2]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X_Marketshare");
+	v[2]=pow(v[1],2)
+	v[0]=v[0]+(v[2]);
+}
+if(v[0]==0)	
+v[3]=0; 
+else 
+v[3]=1/v[0]
+RESULT(v[3])
+
+//Base pro desafio é o Sim7 
+
+
+// MODELO COM IDEIAS ECONÔMICAS - Exercício 3
+
 
 EQUATION("X") 
 /* 
@@ -211,7 +234,7 @@ Variável do Setor
 		CYCLE(cur,"FIRM")
 				{
 				v[0]++;
-				WRITES(cur, "Firm_Rank", v[0]); // Firm_Rank é parâmetro da Firma
+				WRITES(cur, "rank", v[0]); // Firm_Rank é parâmetro da Firma
 				}
 RESULT(0)
 
