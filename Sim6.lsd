@@ -8,13 +8,28 @@ Label Root
 		Label FIRM
 		{
 			Var: X
-			Var: P
-			Var: QUAL
+			Var: c
 			Var: X_Marketshare
+			Param: rank
+			Var: P
+			Var: Q
 
 		}
 
+		Var: X_Ave
 		Var: X_Sum
+		Var: X_Max
+		Var: Leader
+		Var: Marketshare_Sum
+		Var: Rank
+		Var: EntryExit
+		Param: switch_entry
+		Param: p_adj
+		Param: q_sd
+		Param: e_p
+		Param: e_q
+		Param: max
+		Param: min
 
 	}
 
@@ -27,16 +42,31 @@ DATA
 Object: Root C	1
 
 Object: SECTOR C	1
-Var: X_Sum 0 n + n n
+Var: X_Ave 0 s + n p
+Var: X_Sum 0 s + n p
+Var: X_Max 0 s + n p
+Var: Leader 0 s + n n
+Var: Marketshare_Sum 0 s + n n
+Var: Rank 0 n + n n
+Var: EntryExit 0 n + n n
+Param: switch_entry 0 n + n n	0
+Param: p_adj 0 n + n n	1
+Param: q_sd 0 n + n n	0.1
+Param: e_p 0 n + n n	1
+Param: e_q 0 n + n n	1
+Param: max 0 n + n n	1
+Param: min 0 n + n n	0
 
 Object: FIRM C	10
-Var: X 1 s + n p	2.02504971499992e+121	1.37707292242232e+122	1.2752183606782e+150	4.87314175575992e+121	4.88633576221682e+121	7.42012735482872e+124	1.44694069102628e+135	1.82160977464216e+125	2.87180927715044e+241	7.88321074100199e+123
-Var: P 1 s + n n	2	2	3.82474734025793	2	2	2	2.36708828164756	2.03468137390438	17.9449093987296	2
-Var: QUAL 2 s + n n	51.650462537066	51.5882773310842	50.2945891268125	49.9836975092272	42.2396562884157	41.7851506042084	50.9697146452216	50.4186468480552	51.2043496113693	50.3519555586686	55.843738776942	55.0196739635411	54.2892679821058	53.8964886167442	53.2472299047951	53.1757720002188	53.5615985379266	53.2835816191164	54.8544359851966	54.2298888094997
-Var: X_Marketshare 2 s + n n	7.05147702917541e-121	9.53451439865458e-120	4.79514058743037e-120	6.65213947838957e-119	4.44047023186558e-92	3.544410999765e-91	1.6968890638153e-120	2.32113545799757e-119	1.70148338230361e-120	2.337052039105e-119	2.58378138613416e-117	3.24147184983147e-116	5.03842891844825e-107	5.48065051413643e-106	6.3430736474591e-117	8.21064663755547e-116	1	1	2.74503282781512e-118	3.50538201345781e-117
+Var: X 1 s + n p	7.35830220231456	6.63665160028392	6.21030408374644	6.17083706192619	6.16183774085988	5.80673917736128	5.75077856033654	5.42365285851858	5.19965674962025	4.33232386302229
+Var: c 0 n + n n
+Var: X_Marketshare 2 s + n n	0.124609096338112	0.0763324696306375	0.112388311309385	0.0970915362409931	0.105168333480122	0.100351644531188	0.104499979586933	0.10333839259379	0.104347580672768	0.101635740483462	0.098334167538607	0.0956810276942064	0.0973865030195033	0.112138946927797	0.0918467960365956	0.115832931973774	0.0880535361315738	0.0935397906047132	0.0733656958864012	0.104057519319438
+Param: rank 0 n + n n	1	2	3	4	5	6	7	8	9	10
+Var: P 1 s + n n	0.763324696306374	0.970915362409931	1.00351644531188	1.0333839259379	1.01635740483462	0.956810276942063	1.12138946927797	1.15832931973774	0.935397906047133	1.04057519319438
+Var: Q 1 s + n n	5.41731451750853	5.54461832033724	5.83972631472486	5.45901521740866	5.92686129937309	5.21614021218778	5.6917479221049	5.18227363185114	4.62940922933253	4.44179880843003
 
 SIM_NUM 1
-SEED 4
+SEED 6
 MAX_STEP 100
 EQUATION fun_exercicio1.cpp
 MODELREPORT report_Sim1.html
@@ -53,10 +83,88 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_X_Ave
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
 Variable_X_Sum
 Variável do Setor
+_INIT_
 
+END_DESCRIPTION
 
+Variable_X_Max
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Leader
+Variável do Setor 
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Marketshare_Sum
+Variável da Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Rank
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_EntryExit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_switch_entry
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_p_adj
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_q_sd
+(no description available)
+_INIT_
+All 1 instances equal to 0.1.
+END_DESCRIPTION
+
+Parameter_e_p
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_e_q
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_max
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_min
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_FIRM
@@ -68,7 +176,25 @@ END_DESCRIPTION
 Variable_X
 (no description available)
 _INIT_
-All 1 instances equal to 10.
+All 10 instances equal to 0.
+END_DESCRIPTION
+
+Variable_c
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Marketshare
+Variável da Firma
+_INIT_
+All 10 instances equal to 0.1.
+END_DESCRIPTION
+
+Parameter_rank
+(no description available)
+_INIT_
+All 10 instances equal to 0.
 END_DESCRIPTION
 
 Variable_P
@@ -77,16 +203,10 @@ _INIT_
 All 10 instances equal to 1.
 END_DESCRIPTION
 
-Variable_QUAL
+Variable_Q
 (no description available)
 _INIT_
 All 10 instances equal to 1.
-END_DESCRIPTION
-
-Variable_X_Marketshare
-Variável da Firma
-_INIT_
-All 10 instances equal to 0.1.
 END_DESCRIPTION
 
 
