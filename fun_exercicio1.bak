@@ -22,38 +22,40 @@ não aceita acento, espaço ou caractere especial, apenas _
 EQUATION("X") 
 /* 
 X = Vendas no nível da Firma
-Vendas é Preço x Quantidade
-Quantidade é influencidada pelo preço + qualidade + fator aleatório
 */
-v[0]=VL("X",1);
-v[1]=V("P");
-v[2]=V("QUAL");
-v[3]=(0.5*v[1]+0.3*v[2]+0.2*(RND+1))*v[0];
-v[4]=v[1]*v[3];
-RESULT(v[4])
+v[0]=V("P");
+v[1]=V("Q");
+v[2]=V("c");
+v[3]=V("e_p");
+v[4]=V("e_q");
+v[5]=pow(v[1],v[4])/pow(v[0],v[3]);
+v[6]=v[5]+v[2];
+RESULT(v[6])
 
 
 EQUATION("P") // P = Preço no nível da Firma
-v[0]=VL("X_Marketshare", 2);
-v[1]=VL("X_Marketshare", 1);
-		if(v[1]>=v[0])
-		v[2]=((v[1]-v[0])/v[0])+1; 
-		else 
-		v[2]=1;
-v[3]=VL("P",1);
-v[4]=v[2]*v[3];
-RESULT(v[4])
+v[0]=VL("P",1);
+v[1]=V("p_adj");
+v[2]=VL("X_Marketshare",1);
+v[3]=VL("X_Marketshare",2);
+v[4]=(v[2]-v[3])/v[3];
+v[5]=v[0]*(1+v[1]*v[4]);
+RESULT(v[5])
 
 
-EQUATION("QUAL") // QUAL = Qualidade no nível da Firma
-v[0]=VL("QUAL", 2);
-v[1]=VL("QUAL", 1);
-		if(v[1]>=v[0]) 	
-		v[2]=v[1]+RND; 
-		else
-		v[2]=v[0]+RND;
+EQUATION("Q") // QUAL = Qualidade no nível da Firma
+v[0]=VL("Q",1);
+v[1]=V("q_sd");
+v[2]=norm(v[0],v[1]);
+v[3]=max(v[0],v[2]);
+RESULT(v[3])
+
+
+EQUATION("c")
+v[0]=V("min");
+v[1]=V("max");
+v[2]=uniform(v[0],v[1]);
 RESULT(v[2])
-
 
 EQUATION("X_Marketshare")
 /*
@@ -70,6 +72,15 @@ else
 v[2]=0
 RESULT(v[2])
 */
+
+EQUATION("X_Sum") // Variável do Setor
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X");
+	v[0]=v[0]+v[1];
+}
+RESULT(v[0])
 
 
 // MODELOS ANTERIORES
@@ -106,18 +117,6 @@ RESULT(v[2])
 Tem que manter a definição da equação "c" em seguida
 */
 
-EQUATION("X_Sum")
-/*
-Variável do Setor
-*/
-v[0]=0;
-CYCLE(cur, "FIRM")
-{
-	v[1]=VS(cur,"X");
-	v[0]=v[0]+v[1];
-}
-
-RESULT(v[0])
 
 EQUATION("X_Ave")
 /*

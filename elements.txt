@@ -1,2 +1,2 @@
-c EntryExit Firm_Rank Leader Marketshare_Sum P QUAL Rank X X_Ave X_Marketshare X_Max X_Sum
-max min rank switch_entry
+c EntryExit Firm_Rank Leader Marketshare_Sum P Q Rank X X_Ave X_Marketshare X_Max X_Sum
+e_p e_q max min p_adj q_sd rank switch_entry

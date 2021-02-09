@@ -8,13 +8,28 @@ Label Root
 		Label FIRM
 		{
 			Var: X
-			Var: P
-			Var: QUAL
+			Var: c
 			Var: X_Marketshare
+			Param: rank
+			Var: P
+			Var: Q
 
 		}
 
+		Var: X_Ave
 		Var: X_Sum
+		Var: X_Max
+		Var: Leader
+		Var: Marketshare_Sum
+		Var: Rank
+		Var: EntryExit
+		Param: switch_entry
+		Param: p_adj
+		Param: q_sd
+		Param: e_p
+		Param: e_q
+		Param: max
+		Param: min
 
 	}
 
@@ -27,16 +42,31 @@ DATA
 Object: Root C	1
 
 Object: SECTOR C	1
-Var: X_Sum 0 n + n n
+Var: X_Ave 0 s + n p
+Var: X_Sum 0 s + n p
+Var: X_Max 0 s + n p
+Var: Leader 0 s + n n
+Var: Marketshare_Sum 0 s + n n
+Var: Rank 0 n + n n
+Var: EntryExit 0 n + n n
+Param: switch_entry 0 n + n n	0
+Param: p_adj 0 n + n n	1
+Param: q_sd 0 n + n n	0.1
+Param: e_p 0 n + n n	1
+Param: e_q 0 n + n n	1
+Param: max 0 n + n n	1
+Param: min 0 n + n n	0
 
 Object: FIRM C	10
-Var: X 1 s + n p	10	10	10	10	10	10	10	10	10	10
+Var: X 1 s + n p	0	0	0	0	0	0	0	0	0	0
+Var: c 0 n + n n
+Var: X_Marketshare 2 s + n n	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
+Param: rank 0 n + n n	0	0	0	0	0	0	0	0	0	0
 Var: P 1 s + n n	1	1	1	1	1	1	1	1	1	1
-Var: QUAL 2 s + n n	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1	2	1
-Var: X_Marketshare 2 s + n n	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1	0.2	0.1
+Var: Q 1 s + n n	1	1	1	1	1	1	1	1	1	1
 
 SIM_NUM 1
-SEED 3
+SEED 5
 MAX_STEP 100
 EQUATION fun_exercicio1.cpp
 MODELREPORT report_Sim1.html
@@ -53,10 +83,88 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_X_Ave
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
 Variable_X_Sum
 Variável do Setor
+_INIT_
 
+END_DESCRIPTION
 
+Variable_X_Max
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Leader
+Variável do Setor 
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Marketshare_Sum
+Variável da Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Rank
+Variável do Setor
+_INIT_
+
+END_DESCRIPTION
+
+Variable_EntryExit
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_switch_entry
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_p_adj
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_q_sd
+(no description available)
+_INIT_
+All 1 instances equal to 0.1.
+END_DESCRIPTION
+
+Parameter_e_p
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_e_q
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_max
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_min
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_FIRM
@@ -68,7 +176,25 @@ END_DESCRIPTION
 Variable_X
 (no description available)
 _INIT_
-All 1 instances equal to 10.
+All 10 instances equal to 0.
+END_DESCRIPTION
+
+Variable_c
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_X_Marketshare
+Variável da Firma
+_INIT_
+All 10 instances equal to 0.1.
+END_DESCRIPTION
+
+Parameter_rank
+(no description available)
+_INIT_
+All 10 instances equal to 0.
 END_DESCRIPTION
 
 Variable_P
@@ -77,16 +203,10 @@ _INIT_
 All 10 instances equal to 1.
 END_DESCRIPTION
 
-Variable_QUAL
+Variable_Q
 (no description available)
 _INIT_
 All 10 instances equal to 1.
-END_DESCRIPTION
-
-Variable_X_Marketshare
-Variável da Firma
-_INIT_
-All 10 instances equal to 0.1.
 END_DESCRIPTION
 
 
